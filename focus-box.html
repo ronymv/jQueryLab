@@ -2,76 +2,31 @@
 <head>
 	<title>jQuery - focusBox()</title>
 
-<style type="text/css">
-* { margin:0; padding:0; list-style:none; }
-body { background:#ddd; font-family:Helvetica,arial; font-size:85%; }
-.content { padding:20px; margin:50px; border:1px solid #999; background:#fff; box-shadow:#999 0 0 10px; -moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px; }
-.content h1 { font-size:32px; font-weight:normal; color:#333; letter-spacing:-2px; }
-.teste { margin:0 0 10px 0; }
-.debug { }
-.debug h2 { margin:0 0 10px 0; font-size:26px; }
-.debug p { background:#eee; margin:5px 0 0 0; padding:10px; font-weight:bold; font-size:16px; color:#004499; -moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px; }
-.debug p:nth-child(even) { background:#e7e7e7; }
-.clear { clear:both; }
+	<meta name="title" content="focusBox()" />
+	<meta name="description" content="Coloca foco em um elemento ao passar o mouse por cima." />
+	<!-- <meta name="image" content="images/focusBoxThumb.jpg" /> -->
 
-/* =Box list
--------------------------------------------------------------- */
-.box-list { }
-.box-list ul { float:left; width:100%; }
-.box-list ul li { float:left; font-size:22px; padding:20px 50px; background:#333; color:#fff; margin:20px 20px 0 0; border-radius:3px; }
+	<link rel="stylesheet" href="css/base.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="css/focus-box.css" type="text/css" media="all" />
 
-.box-list-small {  }
-.box-list-small ul { float:left; width:100%;  }
-.box-list-small ul li { float:left; font-size:16px; padding:5px 10px; background:#555; color:#fff; margin:20px 5px 0 0; border-radius:3px; }
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.focusBox.js"></script>
 
-.box-list-divs { float:left; width:100%; }
-.box-list-divs .item-box { float:left; font-size:22px; padding:50px 250px; background:#cc3333; color:#fff; margin:20px 20px 0 0; border-radius:3px; }
+	<script type="text/javascript">
 
-</style>
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript">
-
-(function($) {
-	$.fn.focusBox = function(options) {
-		var defaults = {
-			reference: 'ul li', 
-			startDuration: 300, 
-			endDuration: 200, 
-			opacity: 0.3
-		};
-		
-		var options = $.extend({}, defaults, options);
-
-		return this.each(function() {
-			var _this = $(this);
-			$(this).find(options.reference).hover(function() {
-				var index = $(this).index();
-				_this.find(options.reference).each(function() {
-					if ($(this).index() != index) {
-						$(this).stop().fadeTo(options.startDuration, options.opacity);
-					}
-				});
-			}, function() {
-				_this.find(options.reference).stop().fadeTo(options.endDuration, 1);
+		$(document).ready(function(){
+			$('.box-list, .box-list-small').focusBox({
+				opacity: 0.5
+			});
+			
+			$('.box-list-divs').focusBox({
+				reference: '.item-box', 
+				startDuration: 200, 
+				opacity: 0.2
 			});
 		});
-	};
-})(jQuery);
 
-$(document).ready(function(){
-	$('.box-list, .box-list-small').focusBox({
-		opacity: 0.5
-	});
-	
-	$('.box-list-divs').focusBox({
-		reference: '.item-box', 
-		startDuration: 200, 
-		opacity: 0.2
-	});
-});
-
-</script>
+	</script>
 </head>
 <body>
 	<div class="content">

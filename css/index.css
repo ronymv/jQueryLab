@@ -1,0 +1,11 @@
+#available-plugins { float:left; margin:20px 0 0 0; }
+#available-plugins a { -moz-transition:all 0.1s; }
+#available-plugins .item-plugin { float:left; width:300px; background:#eee; border-top:1px solid #aaa; padding:20px; margin:0 20px 20px 0px; }
+#available-plugins .item-plugin .item-plugin-image { float:left; width:50px; height:50px; background:#333; padding:2px; margin:0 20px 0px 0; overflow: hidden; border-radius:2px; color:#333; }
+#available-plugins .item-plugin .item-plugin-title { font-size:18px; font-weight:bold; letter-spacing:0px; margin-bottom:10px; }
+#available-plugins .item-plugin .item-plugin-title a { color:#333; text-decoration:none; }
+#available-plugins .item-plugin .item-plugin-title a:hover { color:#555;  }
+#available-plugins .item-plugin .item-plugin-description { font-size:13px; margin-left:75px; }
+#available-plugins .item-plugin .item-plugin-link { font-size:14px; margin-top:20px; float:left; width:100%; }
+#available-plugins .item-plugin .item-plugin-link a { float:right; background:#ccc; border-radius:2px ; padding:2px 5px; text-decoration:none; color:#333; font-weight:bold; border:none; }
+#available-plugins .item-plugin .item-plugin-link a:hover { background:#ddd;  }

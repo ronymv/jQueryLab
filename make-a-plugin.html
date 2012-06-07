@@ -1,86 +1,92 @@
 <html>
 <head>
 	<title>jQuery Plugin - Criando um plugin maneiro!</title>
-</head>
 
-<style type="text/css">
-* { margin:0; padding:0; }
-body { background:#ddd; font-family:Helvetica,arial; font-size:85%; }
-.content { padding:20px; margin:50px; border:1px solid #999; background:#fff; box-shadow:#999 0 0 10px; -moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px; }
-.teste { margin:0 0 10px 0; }
-.debug { }
-.debug h2 { margin:0 0 10px 0; font-size:26px; }
-.debug p { background:#eee; margin:5px 0 0 0; padding:10px; font-weight:bold; font-size:16px; color:#004499; -moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px; }
-.debug p:nth-child(even) { background:#e7e7e7; }
-</style>
+	<meta name="title" content="Criando um plugin maneiro!" />
+	<meta name="description" content="Uma das várias formas de se criar um plugin em jQuery!" />
+	<!-- <meta name="image" content="images/hoverContentThumb.jpg" /> -->
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript">
+	<link rel="stylesheet" href="css/base.css" type="text/css" media="all" />
 
-(function($) {
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 
-	var defaults = {};
+	<style type="text/css">
+	.teste { margin:0 0 10px 0; }
+	.debug { }
+	.debug h2 { margin:0 0 10px 0; font-size:26px; }
+	.debug p { background:#eee; margin:5px 0 0 0; padding:10px; font-weight:bold; font-size:16px; color:#004499; -moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px; }
+	.debug p:nth-child(even) { background:#e7e7e7; }
+	</style>
 
-	$.teste = function(e, o) {
-		this.options    = $.extend({}, defaults, o || {});
-		this.element = $(e);
-		this.init();
-	};
+	<script type="text/javascript">
 
-	var $teste = $.teste;
+	(function($) {
 
-	$teste.fn = $teste.prototype = {};
+		var defaults = {};
 
-	$teste.fn.extend = $teste.extend = $.extend;	
+		$.teste = function(e, o) {
+			this.options    = $.extend({}, defaults, o || {});
+			this.element = $(e);
+			this.init();
+		};
 
-	$teste.fn.extend({
-		init: function(options) {
-			console.log('init');
-			this.element.css({'color': 'red'});
-		}, 
-		reload: function() {
-			console.log('reload');
-			this.element.css({'color': 'green'});
-		}, 
-		next: function() {
-			console.log('next');
-			this.element.css({'color': 'blue'});
-		}
-	});
+		var $teste = $.teste;
 
-	$.fn.teste = function(o) {
-		return this.each(function() {
-			var instance = $(this).data('teste');
-			if (instance) 
-			{
-				if (o) $.extend(instance.options, o);
-				instance.reload();
-				if (typeof o == 'string' && typeof instance[o] == 'function') instance[o]();
-			} 
-			else 
-			{
-				$(this).data('teste', new $teste(this, o));
+		$teste.fn = $teste.prototype = {};
+
+		$teste.fn.extend = $teste.extend = $.extend;	
+
+		$teste.fn.extend({
+			init: function(options) {
+				console.log('init');
+				this.element.css({'color': 'red'});
+			}, 
+			reload: function() {
+				console.log('reload');
+				this.element.css({'color': 'green'});
+			}, 
+			next: function() {
+				console.log('next');
+				this.element.css({'color': 'blue'});
 			}
 		});
+
+		$.fn.teste = function(o) {
+			return this.each(function() {
+				var instance = $(this).data('teste');
+				if (instance) 
+				{
+					if (o) $.extend(instance.options, o);
+					instance.reload();
+					if (typeof o == 'string' && typeof instance[o] == 'function') instance[o]();
+				} 
+				else 
+				{
+					$(this).data('teste', new $teste(this, o));
+				}
+			});
+		};
+	})(jQuery);
+
+	$(document).ready(function(){
+		$('.teste').teste();
+		$('.teste').teste('next');
+	});
+
+	var console = {
+		i: 1,
+		log: function(e) {
+			$('.debug h2').after('<p>'+this.i + ': ' + e+'</p>');
+			this.i++;
+		}
 	};
-})(jQuery);
 
-$(document).ready(function(){
-	$('.teste').teste();
-	$('.teste').teste('next');
-});
+	</script>
+</head>
 
-var console = {
-	i: 1,
-	log: function(e) {
-		$('.debug h2').after('<p>'+this.i + ': ' + e+'</p>');
-		this.i++;
-	}
-};
-
-</script>
 <body>
 	<div class="content">
+		<h1>Make a Plugin</h1>
 		<div class="teste">Teste</div>
 		<div class="debug">
 			<h2>Debug</h2>

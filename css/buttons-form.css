@@ -1,0 +1,12 @@
+/* =Box list
+-------------------------------------------------------------- */
+.form-register { margin:20px 0 0 0; padding:40px; border:1px solid #ccc; }
+.form-register .input { margin:0 0 20px 0 }
+.form-register .input label { display: block; margin-bottom:5px; color:#999; }
+.form-register .input input { font-size:28px; font-weight:normal; -moz-transition:all 0.4s; border:1px solid #ccc; padding:5px 10px; border-radius:2px; color:#777; }
+.form-register .input input:focus { background:-moz-linear-gradient(-90deg, #ffffcc, #ffffbb); box-shadow:#ccc 0 0 10px; border-color:#333; color:#000; }
+.form-register .submit { margin:20px 0 0 0; border-top:1px solid #ddd; padding-top:20px; }
+.form-register .submit button { font-size:22px; font-weight:normal; margin:0 20px 0 0; float:left; }
+
+.buttons-form-box { background:#ccc; padding:20px; position: fixed; bottom:0; left:0; width:100%; display:none; border-top:1px solid #555; box-shadow:rgba(0,0,0,0.5) 0 0 20px; }
+.buttons-form-box button { font-size:22px; font-weight:normal; margin:0 20px 0 0; float:left; }

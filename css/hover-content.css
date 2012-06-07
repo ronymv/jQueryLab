@@ -1,0 +1,9 @@
+/* =Hover content
+-------------------------------------------------------------- */
+.hover-content {  }
+.hover-content .item-content { position:relative; width:250px; height:250px; margin:20px 20px 0 0; float:left; overflow: hidden; }
+.hover-content .item-content-hide { position: absolute; top:0; left:0px; width:250px; height:250px; opacity: 0.8; background:#333; color:#fff; }
+.hover-content .item-content-hide h2 { padding:20px; font-size:36px; font-weight:normal; letter-spacing:-2px; }
+.hover-content .item-content-hide p { padding:0 20px 20px 20px ; font-size:18px; }
+
+.hover-content .item-content.item-large { width:500px !important; }
