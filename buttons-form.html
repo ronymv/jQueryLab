@@ -1,0 +1,164 @@
+<html>
+<head>
+	<title>jQuery - buttonsForm()</title>
+
+<style type="text/css">
+* { margin:0; padding:0; list-style:none; }
+body { background:#ddd; font-family:Helvetica,arial; font-size:85%; }
+.content { padding:20px; margin:50px; border:1px solid #999; background:#fff; box-shadow:#999 0 0 10px; -moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px; }
+.content h1 { font-size:32px; font-weight:normal; color:#333; letter-spacing:-2px; }
+.teste { margin:0 0 10px 0; }
+.debug { }
+.debug h2 { margin:0 0 10px 0; font-size:26px; }
+.debug p { background:#eee; margin:5px 0 0 0; padding:10px; font-weight:bold; font-size:16px; color:#004499; -moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px; }
+.debug p:nth-child(even) { background:#e7e7e7; }
+.clear { clear:both; }
+
+/* =Box list
+-------------------------------------------------------------- */
+.form-register { margin:20px; padding:40px; border:1px solid #ccc; }
+.form-register .input { margin:0 0 20px 0 }
+.form-register .input label { display: block; margin-bottom:5px; color:#999; }
+.form-register .input input { font-size:28px; font-weight:normal; -moz-transition:all 0.4s; border:1px solid #ccc; padding:5px 10px; border-radius:2px; color:#777; }
+.form-register .input input:focus { background:-moz-linear-gradient(-90deg, #ffffcc, #ffffbb); box-shadow:#ccc 0 0 10px; border-color:#333; color:#000; }
+.form-register .submit { margin:20px 0 0 0; border-top:1px solid #ddd; padding-top:20px; }
+.form-register .submit button { font-size:22px; font-weight:normal; margin:0 20px 0 0; float:left; }
+
+.buttons-form-box { background:#ccc; padding:20px; position: fixed; bottom:0; left:0; width:100%; display:none; border-top:1px solid #555; box-shadow:rgba(0,0,0,0.5) 0 0 20px; }
+.buttons-form-box button { font-size:22px; font-weight:normal; margin:0 20px 0 0; float:left; }
+
+</style>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+(function($) {
+	$.fn.buttonsForm = function(options) {
+		var defaults = {
+			reference: 'div.submit'
+		};
+		
+		var options = $.extend({}, defaults, options);
+		var doc_top;
+
+		var methods = {
+			on_scroll: function(element, ref_top, div_box) {
+				doc_top  = $(document).scrollTop();
+				doc_top += ($(window).height() - (element.find(options.reference).height()));
+
+				if (doc_top >= ref_top) {
+					this.hideBox(div_box);
+					if (div_box.find('*').length != 0) {
+						element.find('.position-reference').before(div_box.find(options.reference).clone());
+						div_box.find(options.reference).remove();
+						element.find('.position-reference').remove();
+					}
+				}
+				else {
+					if (div_box.find('*').length == 0) {
+						element.find(options.reference)
+							.after('<div class="position-reference"></div>')
+							.appendTo(div_box);
+						element.find('.position-reference').hide().append(div_box.find('button').clone());
+					};
+					this.showBox(div_box);
+				}
+			},
+			showBox: function(div_box) {
+				div_box.stop().fadeTo(500, 1);
+			}, 
+			hideBox: function(div_box) {
+				div_box.hide();
+			}
+		};
+
+		return this.each(function() {
+			var _this = $(this);
+			var ref_top = _this.find(options.reference).offset().top;
+			var div_box = $('<div class="buttons-form-box"></div>');
+
+			$('body').append(div_box);
+
+			$(window).scroll(function() {
+				methods.on_scroll(_this, ref_top, div_box);
+			});
+
+			methods.on_scroll(_this, ref_top, div_box);
+
+			$('.buttons-form-box').find('button').live('click', function() {
+				var clone = $(this).clone();
+				_this.append(clone);
+				clone.hide().trigger('click');
+				clone.remove();
+			});
+		});
+	};
+})(jQuery);
+
+$(document).ready(function(){
+	$('.form-register').buttonsForm({
+		
+	}).submit(function() {
+		console.log($(this).serialize());
+		return false;
+	});
+});
+
+</script>
+</head>
+<body>
+	<div class="content">
+		<h1>buttonsForm</h1>
+
+		<form action="#" class="form-register">
+			<div class="input">
+				<label for="name">Nome</label>
+				<input type="text" name="name" />
+			</div>
+			<div class="input">
+				<label for="email">E-mail</label>
+				<input type="text" name="email" />
+			</div>
+			<div class="input">
+				<label for="email">E-mail</label>
+				<input type="text" name="email" />
+			</div>
+			<div class="input">
+				<label for="email">E-mail</label>
+				<input type="text" name="email" />
+			</div>
+			<div class="input">
+				<label for="email">E-mail</label>
+				<input type="text" name="email" />
+			</div>
+			<div class="input">
+				<label for="email">E-mail</label>
+				<input type="text" name="email" />
+			</div>
+			<div class="input">
+				<label for="email">E-mail</label>
+				<input type="text" name="email" />
+			</div>
+			<div class="input">
+				<label for="email">E-mail</label>
+				<input type="text" name="email" />
+			</div>
+			<div class="input">
+				<label for="email">E-mail</label>
+				<input type="text" name="email" />
+			</div>
+			<div class="input">
+				<label for="email">E-mail</label>
+				<input type="text" name="email" />
+			</div>
+			<div class="submit">
+				<button type="submit">Enviar</button>
+				<button type="reset">Resetar</button>
+			</div>
+			<div class="clear"></div>
+		</form>
+
+		<div class="clear"></div>
+	</div>
+</body>
+</html>

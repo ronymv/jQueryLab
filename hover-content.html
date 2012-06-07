@@ -1,0 +1,135 @@
+<html>
+<head>
+	<title>jQuery - hoverContent()</title>
+
+<style type="text/css">
+* { margin:0; padding:0; list-style:none; }
+body { background:#ddd; font-family:Helvetica,arial; font-size:85%; }
+.content { padding:20px; margin:50px; border:1px solid #999; background:#fff; box-shadow:#999 0 0 10px; -moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px; }
+.content h1 { font-size:32px; font-weight:normal; color:#333; letter-spacing:-2px; }
+.teste { margin:0 0 10px 0; }
+.debug { }
+.debug h2 { margin:0 0 10px 0; font-size:26px; }
+.debug p { background:#eee; margin:5px 0 0 0; padding:10px; font-weight:bold; font-size:16px; color:#004499; -moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px; }
+.debug p:nth-child(even) { background:#e7e7e7; }
+.clear { clear:both; }
+
+/* =Hover content
+-------------------------------------------------------------- */
+.hover-content {  }
+.hover-content .item-content { position:relative; width:250px; height:250px; margin:20px 20px 0 0; float:left; overflow: hidden; }
+.hover-content .item-content-hide { position: absolute; top:0; left:0px; width:250px; height:250px; opacity: 0.8; background:#333; color:#fff; }
+.hover-content .item-content-hide h2 { padding:20px; font-size:36px; font-weight:normal; letter-spacing:-2px; }
+.hover-content .item-content-hide p { padding:0 20px 20px 20px ; font-size:18px; }
+
+.hover-content .item-content.item-large { width:500px !important; }
+
+</style>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+(function($) {
+	$.fn.hoverContent = function(options) {
+		var defaults = {
+			startDuration: 300, 
+			endDuration: 200, 
+			startEasing: 'swing', 
+			endEasing: 'swing', 
+			direction: 'left', 
+			invert: false
+		};
+		
+		var options = $.extend({}, defaults, options);
+		
+		var methods = {
+			getOptionAnimation: function(element) {
+				var options_animation = {
+					hover: { left:'auto', top:'auto', right:'auto', bottom:'auto', width: element.width(), height: element.height() }, 
+					out: { left:'auto', top:'auto', right:'auto', bottom:'auto', width: element.width(), height: element.height() }
+				};
+
+				switch (options.direction)
+				{
+					case 'left' : default : 
+						options_animation.out.left 		= -(element.width()) + 'px'; 
+						options_animation.hover.left 	= '0px'; 
+						break;
+					case 'right' : 	
+						options_animation.out.right 	= -(element.width()) + 'px'; 
+						options_animation.hover.right 	= '0px'; 
+						break;
+					case 'top' : 	
+						options_animation.out.top 		= -(element.height()) + 'px'; 
+						options_animation.hover.top 	= '0px'; 
+						break;
+					case 'bottom' : 
+						options_animation.out.bottom 	= -(element.height()) + 'px'; 
+						options_animation.hover.bottom 	= '0px'; 
+						break;
+				}
+
+				if (options.invert) {
+					var aux = options_animation.hover;
+					options_animation.hover = options_animation.out;
+					options_animation.out = aux;
+				};
+
+				return options_animation;
+			}
+		};
+
+		return this.each(function() {
+			var _this = $(this);
+			var options_animation = methods.getOptionAnimation(_this);
+
+			_this.find('.item-content-hide').css( options_animation.out );
+
+			_this.hover(function() {
+				$(this).find('.item-content-hide').stop().animate(options_animation.hover, options.startDuration, options.startEasing);
+			}, function() {
+				$(this).find('.item-content-hide').stop().animate(options_animation.out, options.endDuration, options.startEasing);
+			});
+		});
+
+	};
+})(jQuery);
+
+$(document).ready(function(){
+	$('.item-content').hoverContent();
+});
+
+</script>
+</head>
+<body>
+	<div class="content">
+		<h1>hoverContent</h1>
+
+		<div class="hover-content">
+			<div class="item-content">
+				<div class="item-content-hide">
+					<h2>Conteudo Escondido</h2>
+					<p>Loren ipsum lara nomem clavark.</p>
+				</div>
+				<img src="http://www.le-libriste.fr/wp-content/uploads/2011/10/ubuntu_wallpaper_4_natty_by_elektroll-d3g28kl-250x250.png" alt="">
+			</div>
+			<div class="item-content item-large">
+				<div class="item-content-hide">
+					<h2>Conteudo Escondido</h2>
+					<p>Loren ipsum lara nomem clavark.</p>
+				</div>
+				<img src="http://www.3dots.be/wp-content/uploads/custom/5.jpg" alt="">
+			</div>
+			<div class="item-content">
+				<div class="item-content-hide">
+					<h2>Conteudo Escondido</h2>
+					<p>Loren ipsum lara nomem clavark.</p>
+				</div>
+				<img src="http://www.le-libriste.fr/wp-content/uploads/2011/10/blue_ubuntu_by_libihero-d38lmsh-250x250.png" alt="">
+			</div>
+		</div>
+
+		<div class="clear"></div>
+	</div>
+</body>
+</html>
