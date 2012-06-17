@@ -1,5 +1,7 @@
 <?php 
 
+header('Content-type: text/html; charset=utf-8', true);
+
 function pr ($value) 
 { 
 	echo '<pre>'; 
@@ -91,7 +93,7 @@ class DetectPlugins extends Object
 	 */
 	public function getInfo ($file) 
 	{
-		$defaults = array('title' => $file, 'file' => $file);
+		$defaults = array('title' => $file, 'file' => $file, 'time' =>  filectime($file));
 		$info = get_meta_tags($this->path . '/' . $file);
 		$info = array_merge($defaults, $info);
 		return $info;
@@ -103,6 +105,7 @@ class DetectPlugins extends Object
 <html>
 <head>
 	<title>jQueryLab</title>
+	<meta charset='utf-8'>
 	<link rel="stylesheet" href="css/base.css" media="all" type="text/css" />
 	<link rel="stylesheet" href="css/index.css" media="all" type="text/css" />
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>

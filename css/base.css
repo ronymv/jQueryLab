@@ -4,11 +4,12 @@
 
 body { background:#ddd; font-family:Helvetica,arial; font-size:85%; }
 
-.content { padding:40px; margin:50px; border:1px solid #999; background:#fff; box-shadow:#999 0 0 10px; -moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px; }
+.content { padding:40px; margin:50px; border:1px solid #999; background:#fff; box-shadow:#999 0 0 10px; border-radius:3px; }
 .content h1 { font-size:38px; font-weight:normal; color:#333; letter-spacing:0px; font-family:'Bangers', Arial, Tahoma; }
+
 .teste { margin:0 0 10px 0; }
 .debug { }
 .debug h2 { margin:0 0 10px 0; font-size:26px; }
-.debug p { background:#eee; margin:5px 0 0 0; padding:10px; font-weight:bold; font-size:16px; color:#004499; -moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px; }
+.debug p { background:#eee; margin:5px 0 0 0; padding:10px; font-weight:bold; font-size:16px; color:#004499; border-radius:2px; }
 .debug p:nth-child(even) { background:#e7e7e7; }
 .clear { clear:both; }

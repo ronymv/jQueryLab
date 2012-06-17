@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>jQuery - onePage()</title>
+
+	<meta charset='utf-8'>
+	<meta name="title" content="onePage()" />
+	<meta name="description" content="Plugin para adicionar navegação de página única (single page)" />
+	<!-- <meta name="image" content="images/onePageThumb.jpg" /> -->
+
+	<!-- <link rel="stylesheet" href="css/base.css" type="text/css" media="all" /> -->
+	<!-- <link rel="stylesheet" href="css/focus-box.css" type="text/css" media="all" /> -->
+
+	<style type="text/css">
+
+	* { margin:0; padding:0; list-style:none; }
+	body { font-family:arial; background:#222; color:#fff; }
+	a { color:#ffff99; outline:none !important; }
+
+	article, nav { display:block; }
+
+	.wrapper { }
+	#page { }
+
+	#main-nav { position:fixed;top:0;left:0;width:100%; z-index:9999; box-shadow:rgba(0,0,0,0.7) 0 5px 15px; border-bottom:1px solid #000; }
+	#main-nav nav { padding:20px; background:#111; }
+	#main-nav nav ul { text-align:center; }
+	#main-nav nav ul li { display:inline-block; }
+	#main-nav nav ul li a { font-size:18px; text-decoration:none; padding:15px 30px; border-radius:4px; }
+	#main-nav nav ul li a:hover { background:#000; }
+
+	.page-content { margin-top:60px; position:relative; }
+	.page-content .header-content { padding:0px; background:#333; }
+	.page-content .header-content h2 { font:italic normal 48px georgia; letter-spacing:-5px; }
+	.page-content .content { padding:0px; background:#222; }
+	.page-content .content p { }
+	.page-content .footer-content { padding:0px; background:#111; }
+	.page-content .footer-content p { }
+
+	.page-content .header-content-wrapper, .page-content .content-wrapper, .page-content .footer-content-wrapper { padding:50px; }
+
+	.android { position:absolute; left:320px; top:150px; }
+	.android2 { position:absolute; left:120px; top:100px; height:80px; }
+	.android3 { position:absolute; left:820px; top:120px; height:120px; }
+
+	#home-text { position:absolute; top:40px; left:40%; font-size:36px; font-weight:bold; }
+	#home-text span { position:absolute; top:0; }
+	#home-text span.home-letter-1 { left:0px; }
+	#home-text span.home-letter-2 { left:30px; }
+	#home-text span.home-letter-3 { left:60px; }
+	#home-text span.home-letter-4 { left:90px; }
+	#home-text span.home-letter-5 { left:120px; }
+	#home-text span.home-letter-6 { left:150px; }
+	#home-text span.home-letter-7 { left:180px; }
+	#home-text span.home-letter-8 { left:210px; }
+
+	</style>
+
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+	<script type="text/javascript" src="js/jquery.animate-colors-min.js"></script>
+	<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+	<!-- <script type="text/javascript" src="js/jquery.onePage.js"></script> -->
+
+	<script type="text/javascript">
+
+		(function($) {
+
+			var animData = [
+				// Home
+				{
+					page: '#home-content', 
+					name: '.android', 
+					out: {
+						animate: { left: -2000, top:-500 }, 
+						options: { duration: 300, easing: 'easeOutExpo' }, 
+					}
+				}, 
+				{
+					page: '#home-content', 
+					name: '.android2', 
+					out: {
+						animate: { left: 5600 }, 
+						options: { duration: 500, easing: 'easeOutExpo' }, 
+					}
+				}, 
+				{
+					page: '#home-content', 
+					name: '.android3', 
+					out: {
+						animate: { left: 2600, top: 2600 }, 
+						options: { duration: 800, easing: 'easeOutExpo' }, 
+					}
+				}, 
+				{
+					page: '#home-content', 
+					name: ['.home-letter-1'], 
+					out: {
+						animate: { top: -900, opacity: 0 }, 
+						options: { duration: 500, easing: 'easeOutQuad' }, 
+					}
+				}, 
+				{
+					page: '#home-content', 
+					name: ['.home-letter-2'], 
+					out: {
+						animate: { top: -1200, opacity: 0 }, 
+						options: { duration: 500, easing: 'easeOutQuad' }, 
+					}
+				}, 
+				{
+					page: '#home-content', 
+					name: ['.home-letter-3'], 
+					out: {
+						animate: { top: -700, opacity: 0 }, 
+						options: { duration: 500, easing: 'easeOutQuad' }, 
+					}
+				}, 
+				{
+					page: '#home-content', 
+					name: ['.home-letter-4'], 
+					out: {
+						animate: { top: -300, opacity: 0 }, 
+						options: { duration: 500, easing: 'easeOutQuad' }, 
+					}
+				}, 
+				{
+					page: '#home-content', 
+					name: ['.home-letter-5'], 
+					out: {
+						animate: { top: -800, opacity: 0 }, 
+						options: { duration: 500, easing: 'easeOutQuad' }, 
+					}
+				}, 
+				{
+					page: '#home-content', 
+					name: ['.home-letter-6'], 
+					out: {
+						animate: { top: -400, opacity: 0 }, 
+						options: { duration: 500, easing: 'easeOutQuad' }, 
+					}
+				}, 
+				{
+					page: '#home-content', 
+					name: ['.home-letter-7'], 
+					out: {
+						animate: { top: -700, opacity: 0 }, 
+						options: { duration: 500, easing: 'easeOutQuad' }, 
+					}
+				}, 
+				{
+					page: '#home-content', 
+					name: ['.home-letter-8'], 
+					out: {
+						animate: { top: -600, opacity: 0 }, 
+						options: { duration: 500, easing: 'easeOutQuad' }, 
+					}
+				}, 
+				// About
+				{
+					page: '#about-content', 
+					name: ['.header-content', '.footer-content'], 
+					out: {
+						animate: { left: 1600 }, 
+						options: { duration: 500, easing: 'easeOutExpo' }, 
+					}
+				}
+			];
+
+			var methods = {
+				options: {}, 
+				main_nav: null, 
+				current_page: null, 
+				pages: [], 
+				is_top_page: true, 
+
+				init: function(options) {
+					var _this		= this;
+					this.main_nav	= $('#main-nav');
+					this.options	= options;
+
+					this.setPositions();
+
+					$(window).resize(function() {
+						_this.setPositions();
+					});
+
+					$(window).scroll(function() {
+						_this.movePositions();
+					});
+
+					this.setNavActions();
+
+					this.setCurrentPage();
+
+					this.setMouseWheel();
+				}, 
+
+				setPositions: function() {
+					var _this = this;
+
+					_this.pages				= [];
+					var _height_main_nav	= this.main_nav.height();
+					var _top_page_content	= _height_main_nav;
+					var _top_header			= 0;
+					var _top_content		= 0;
+					var _top_footer			= _height_main_nav;
+					var _height_content		= 0;
+
+					$('.page-content').each(function() {
+						var header	= $(this).find('.header-content');
+						var content	= $(this).find('.content');
+						var footer	= $(this).find('.footer-content');
+
+						$(this).css({
+							'position' : 'absolute', 
+							'margin' : 0, 
+							'overflow' : 'hidden', 
+							'top' : _top_page_content, 
+							'left' : 0, 
+							'width' : '100%', 
+							'height' : $(window).height() - _height_main_nav, 
+						});
+
+						_top_content	= header.height();
+						_height_content	= $(this).height() - header.height() - footer.height();
+						_top_footer		= header.height() + _height_content;
+
+						header.css({
+							'position' : 'absolute', 
+							'top' : _top_header, 
+							'left' : 0, 
+							'width' : '100%' 
+						});
+
+						content.css({
+							'position' : 'absolute', 
+							'top' : _top_content, 
+							'left' : 0, 
+							'width' : '100%',  
+							'height' : _height_content
+						});
+
+						footer.css({
+							'position' : 'absolute', 
+							'top' : _top_footer, 
+							'left' : 0, 
+							'width' : '100%' 
+						});
+
+						_this.pages.push({
+							page: '#'+$(this).attr('id'), 
+							top: _top_page_content
+						});
+						_top_page_content += $(this).height();
+					});
+					if (_this.current_page) _this.changePage(_this.current_page.page);
+				}, 
+
+				setNavActions: function() {
+					var _this = this;
+					this.main_nav.find('ul li a').each(function() {
+						$(this).click(function() {
+							var page = $(this).attr('href')+'-content';
+							_this.changePage(page);
+							return false;
+						});
+					});
+				}, 
+
+				setCurrentPage: function() {
+					var _this 			= this;
+					_this.current_page 	= _this.pages[0];
+					if (document.location.hash) {
+						_this.main_nav.find('a').each(function() {
+							if ($(this).attr('href') == document.location.hash) {
+								$(this).trigger('click');
+							};
+						})
+					};
+				}, 
+
+				changePage: function(new_page) {
+					var _this			= this;
+					old_page			= _this.current_page;
+					_this.current_page	= new_page;
+
+					$.each(_this.pages, function(i) {
+						if (_this.pages[i].page == new_page) {
+							_this.current_page = _this.pages[i];
+						};
+					});
+
+					$('html,body').stop().animate({ 
+						scrollTop: _this.current_page.top - _this.main_nav.height() 
+					}, _this.options.nav_duration, _this.options.easing_nav);
+				}, 
+
+				movePositions: function() {
+					var _this = this;
+					var scrollTop = ($(window).scrollTop() + _this.main_nav.height());
+
+					$.each(_this.pages, function(i) {
+						if (scrollTop >= _this.pages[i].top && scrollTop <= (_this.pages[i].top + $(_this.pages[i].page).height())) 
+						{
+							page 				= _this.pages[i].page;
+							_this.current_page	= _this.pages[i];
+							_this.is_top_page	= (scrollTop == _this.pages[i].top) ? true : false;
+							
+							_this.moveElements();
+
+							if (_this.pages[i+1]) {
+								_this.resetPosition(_this.pages[i+1]);
+							};
+						}
+					});
+				}, 
+
+				resetPosition: function(next_page) {
+					var _this = this;
+					var page = next_page.page;
+					$(page).find('.header-content').stop().animate({
+						left: 0
+					}, 300, _this.options.easing_enter);
+
+					$(page).find('.content').stop().animate({
+						left: 0
+					}, 500, _this.options.easing_enter);
+
+					$(page).find('.footer-content').stop().animate({
+						left: 0
+					}, 1200, _this.options.easing_enter);
+				}, 
+
+				moveElements: function() {
+					var _this = this;
+					$.each(animData, function(i, data) {
+						if (data.page == _this.current_page.page) {
+							var name = (typeof data.name == 'object') ? data.name.join(',') : data.name;
+							var element = $(data.page).find(name);
+
+							if (!animData[i].enter) {
+								var animate_enter = {};
+								$.each(animData[i].out.animate, function(param, value) {
+									animate_enter[param] = element.css(param) || value;
+								});
+								animData[i].enter = {
+									animate: animate_enter
+								};
+							};
+
+							var original_left			= data.out.animate.left;
+							var original_right			= data.out.animate.right;
+							var original_top			= data.out.animate.top;
+							var original_bottom			= data.out.animate.bottom;
+							var original_opacity		= data.out.animate.opacity;
+							
+							data.out.animate.left		= _this.getPartialValue(data.out.animate.left) + parseInt(data.enter.animate.left);
+							data.out.animate.right		= _this.getPartialValue(data.out.animate.right) + parseInt(data.enter.animate.right);
+							data.out.animate.top		= _this.getPartialValue(data.out.animate.top) + parseInt(data.enter.animate.top);
+							data.out.animate.bottom		= _this.getPartialValue(data.out.animate.bottom) + parseInt(data.enter.animate.bottom);
+
+							if (typeof data.out.animate.opacity == 'number') {
+								data.out.animate.opacity	= ((data.out.animate.top * 100) / (original_top / 3) ) * 0.01;
+								data.out.animate.opacity	= Math.floor(data.out.animate.opacity * 10) / 10;
+								data.out.animate.opacity 	= (1 - data.out.animate.opacity);
+							}
+
+							element.stop().animate(data.out.animate, data.out.options);
+							
+							data.out.animate.left		= original_left;
+							data.out.animate.right		= original_right;
+							data.out.animate.top		= original_top;
+							data.out.animate.bottom		= original_bottom;
+							data.out.animate.opacity	= original_opacity;
+
+						};
+					});
+				}, 
+
+				getPartialValue: function(final_left) {
+					var _this 			= this;
+					var scrollTop 		= ($(window).scrollTop() + _this.main_nav.height());
+					var init_position	= (scrollTop - _this.current_page.top);
+					var final_position	= $(_this.current_page.page).height();
+					var left_item 		= ( init_position * final_left ) / final_position;
+					return left_item;
+				}, 
+
+				setMouseWheel: function() {
+					var _this = this;
+					$('#page').mousewheel(function(data, delta) {
+						if (!_this.is_top_page) return false;
+						var calc = (delta > 0) ? -1 : 1;
+						$.each(_this.pages, function(i) {
+							if (_this.pages[i].page == _this.current_page.page && _this.pages[i+calc]) {
+								_this.is_top_page = false;
+								_this.changePage(_this.pages[i+calc]);
+								return false;
+							};
+						});
+						return false;
+					});
+				},
+			};
+
+			$.onePage = function(options) {
+				var defaults = {
+					nav_duration: 		2000, 
+					header_duration: 	1000, 
+					content_duration: 	1000, 
+					footer_duration: 	1000,
+					easing_out: 		'easeInExpo',
+					easing_nav: 		'easeInOutQuad'
+				};
+				var options = $.extend({}, defaults, options);
+				methods.init(options);
+			}; 
+
+		})(jQuery);
+
+		$(document).ready(function(){
+
+			$.onePage();
+			
+		});
+
+	</script>
+</head>
+<body>
+
+	<div id="page" class="wrapper">
+		<div id="main-nav">
+			<nav>
+				<ul>
+					<li><a href="#home">Home</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#projects">Projects</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+			</nav>
+		</div>
+
+		<div id="home-content" class="page-content">
+			<div class="header-content">
+				<div class="header-content-wrapper">
+					<h2>Home</h2>
+				</div>
+			</div>
+			<div class="content">
+				<article class="content-wrapper">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam cursus mattis mauris, ac tempor elit ultricies et. Phasellus leo mauris, aliquet in tristique nec, mattis a leo. Mauris gravida egestas volutpat. Sed blandit mauris sit amet nisl vulputate id interdum augue lobortis. Nunc purus eros, commodo sit amet luctus id, molestie id urna. Mauris vel est eget leo blandit ultrices eu at orci. Sed nisl tellus, posuere in pharetra a, varius sit amet dui. Donec sodales lorem a eros consectetur ullamcorper. Vestibulum erat dui, dictum ut euismod in, convallis quis metus. Integer accumsan condimentum nunc ut tempus. Sed lectus justo, sodales a viverra at, vehicula vitae enim.<br /><br />
+
+					Aliquam non enim magna, eu sagittis enim. Nulla elementum tellus id mi suscipit vel porta mi consequat. Aliquam in odio eget diam egestas semper a at dui. Nam venenatis dignissim interdum. In quis risus odio, at lacinia metus. Nullam cursus, purus ut hendrerit mattis, odio quam sagittis eros, non luctus nulla turpis sed nulla. Curabitur hendrerit mauris a tellus porttitor auctor. Morbi sed eros justo. Praesent quam lorem, tincidunt vel bibendum a, pellentesque sed tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec congue, est in mattis scelerisque, lorem velit congue urna, et ultrices erat nulla et ante.<br /><br />
+
+					Integer congue volutpat libero, molestie pretium lectus varius nec. Etiam enim dui, consequat at adipiscing et, dapibus vitae dolor. Quisque sed nibh orci, a viverra risus. Sed non risus vel sapien facilisis egestas sit amet ac tortor. Nam dapibus tristique mi, quis tincidunt metus eleifend ac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras arcu erat, ultrices eu ornare in, gravida sit amet sapien. Suspendisse eu ligula vel quam commodo cursus quis ut dui. Nam consequat risus a lorem condimentum ut tristique urna tempus. Phasellus metus ante, facilisis a malesuada non, feugiat eget lacus. Nullam felis dui, vehicula a blandit nec, malesuada at nunc. Nam urna tortor, sollicitudin id ornare faucibus, tristique et urna. </p>
+					<img src="http://www.droidforums.net/gallery/data/500/Android.png" alt="" class="android" />
+					<img src="http://www.droidforums.net/gallery/data/500/Android.png" alt="" class="android2" />
+					<img src="http://www.droidforums.net/gallery/data/500/Android.png" alt="" class="android3" />
+					
+				</article>
+			</div>
+			<div class="footer-content">
+				<div class="footer-content-wrapper">
+					<p>Footer home</p>
+					<div id="home-text">
+						<span class="home-letter-1">P</span>
+						<span class="home-letter-2">A</span>
+						<span class="home-letter-3">R</span>
+						<span class="home-letter-4">A</span>
+						<span class="home-letter-5">L</span>
+						<span class="home-letter-6">L</span>
+						<span class="home-letter-7">A</span>
+						<span class="home-letter-8">X</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="about-content" class="page-content">
+			<div class="header-content">
+				<div class="header-content-wrapper">
+					<h2>About</h2>
+				</div>
+			</div>
+			<div class="content">
+				<article class="content-wrapper">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam cursus mattis mauris, ac tempor elit ultricies et. Phasellus leo mauris, aliquet in tristique nec, mattis a leo. Mauris gravida egestas volutpat. Sed blandit mauris sit amet nisl vulputate id interdum augue lobortis. Nunc purus eros, commodo sit amet luctus id, molestie id urna. Mauris vel est eget leo blandit ultrices eu at orci. Sed nisl tellus, posuere in pharetra a, varius sit amet dui. Donec sodales lorem a eros consectetur ullamcorper. Vestibulum erat dui, dictum ut euismod in, convallis quis metus. Integer accumsan condimentum nunc ut tempus. Sed lectus justo, sodales a viverra at, vehicula vitae enim.<br /><br />
+
+					Aliquam non enim magna, eu sagittis enim. Nulla elementum tellus id mi suscipit vel porta mi consequat. Aliquam in odio eget diam egestas semper a at dui. Nam venenatis dignissim interdum. In quis risus odio, at lacinia metus. Nullam cursus, purus ut hendrerit mattis, odio quam sagittis eros, non luctus nulla turpis sed nulla. Curabitur hendrerit mauris a tellus porttitor auctor. Morbi sed eros justo. Praesent quam lorem, tincidunt vel bibendum a, pellentesque sed tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec congue, est in mattis scelerisque, lorem velit congue urna, et ultrices erat nulla et ante.<br /><br />
+
+					Integer congue volutpat libero, molestie pretium lectus varius nec. Etiam enim dui, consequat at adipiscing et, dapibus vitae dolor. Quisque sed nibh orci, a viverra risus. Sed non risus vel sapien facilisis egestas sit amet ac tortor. Nam dapibus tristique mi, quis tincidunt metus eleifend ac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras arcu erat, ultrices eu ornare in, gravida sit amet sapien. Suspendisse eu ligula vel quam commodo cursus quis ut dui. Nam consequat risus a lorem condimentum ut tristique urna tempus. Phasellus metus ante, facilisis a malesuada non, feugiat eget lacus. Nullam felis dui, vehicula a blandit nec, malesuada at nunc. Nam urna tortor, sollicitudin id ornare faucibus, tristique et urna. </p>
+				</article>
+			</div>
+			<div class="footer-content">
+				<div class="footer-content-wrapper">
+					<p>Footer About</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="projects-content" class="page-content">
+			<div class="header-content">
+				<div class="header-content-wrapper">
+					<h2>Projects</h2>
+				</div>
+			</div>
+			<div class="content">
+				<article class="content-wrapper">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam cursus mattis mauris, ac tempor elit ultricies et. Phasellus leo mauris, aliquet in tristique nec, mattis a leo. Mauris gravida egestas volutpat. Sed blandit mauris sit amet nisl vulputate id interdum augue lobortis. Nunc purus eros, commodo sit amet luctus id, molestie id urna. Mauris vel est eget leo blandit ultrices eu at orci. Sed nisl tellus, posuere in pharetra a, varius sit amet dui. Donec sodales lorem a eros consectetur ullamcorper. Vestibulum erat dui, dictum ut euismod in, convallis quis metus. Integer accumsan condimentum nunc ut tempus. Sed lectus justo, sodales a viverra at, vehicula vitae enim.<br /><br />
+
+					Aliquam non enim magna, eu sagittis enim. Nulla elementum tellus id mi suscipit vel porta mi consequat. Aliquam in odio eget diam egestas semper a at dui. Nam venenatis dignissim interdum. In quis risus odio, at lacinia metus. Nullam cursus, purus ut hendrerit mattis, odio quam sagittis eros, non luctus nulla turpis sed nulla. Curabitur hendrerit mauris a tellus porttitor auctor. Morbi sed eros justo. Praesent quam lorem, tincidunt vel bibendum a, pellentesque sed tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec congue, est in mattis scelerisque, lorem velit congue urna, et ultrices erat nulla et ante.<br /><br />
+
+					Integer congue volutpat libero, molestie pretium lectus varius nec. Etiam enim dui, consequat at adipiscing et, dapibus vitae dolor. Quisque sed nibh orci, a viverra risus. Sed non risus vel sapien facilisis egestas sit amet ac tortor. Nam dapibus tristique mi, quis tincidunt metus eleifend ac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras arcu erat, ultrices eu ornare in, gravida sit amet sapien. Suspendisse eu ligula vel quam commodo cursus quis ut dui. Nam consequat risus a lorem condimentum ut tristique urna tempus. Phasellus metus ante, facilisis a malesuada non, feugiat eget lacus. Nullam felis dui, vehicula a blandit nec, malesuada at nunc. Nam urna tortor, sollicitudin id ornare faucibus, tristique et urna. </p>
+				</article>
+			</div>
+			<div class="footer-content">
+				<div class="footer-content-wrapper">
+					<p>Footer Projects</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="contact-content" class="page-content">
+			<div class="header-content">
+				<div class="header-content-wrapper">
+					<h2>Contact</h2>
+				</div>
+			</div>
+			<div class="content">
+				<article class="content-wrapper">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam cursus mattis mauris, ac tempor elit ultricies et. Phasellus leo mauris, aliquet in tristique nec, mattis a leo. Mauris gravida egestas volutpat. Sed blandit mauris sit amet nisl vulputate id interdum augue lobortis. Nunc purus eros, commodo sit amet luctus id, molestie id urna. Mauris vel est eget leo blandit ultrices eu at orci. Sed nisl tellus, posuere in pharetra a, varius sit amet dui. Donec sodales lorem a eros consectetur ullamcorper. Vestibulum erat dui, dictum ut euismod in, convallis quis metus. Integer accumsan condimentum nunc ut tempus. Sed lectus justo, sodales a viverra at, vehicula vitae enim.<br /><br />
+
+					Aliquam non enim magna, eu sagittis enim. Nulla elementum tellus id mi suscipit vel porta mi consequat. Aliquam in odio eget diam egestas semper a at dui. Nam venenatis dignissim interdum. In quis risus odio, at lacinia metus. Nullam cursus, purus ut hendrerit mattis, odio quam sagittis eros, non luctus nulla turpis sed nulla. Curabitur hendrerit mauris a tellus porttitor auctor. Morbi sed eros justo. Praesent quam lorem, tincidunt vel bibendum a, pellentesque sed tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec congue, est in mattis scelerisque, lorem velit congue urna, et ultrices erat nulla et ante.<br /><br />
+
+					Integer congue volutpat libero, molestie pretium lectus varius nec. Etiam enim dui, consequat at adipiscing et, dapibus vitae dolor. Quisque sed nibh orci, a viverra risus. Sed non risus vel sapien facilisis egestas sit amet ac tortor. Nam dapibus tristique mi, quis tincidunt metus eleifend ac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras arcu erat, ultrices eu ornare in, gravida sit amet sapien. Suspendisse eu ligula vel quam commodo cursus quis ut dui. Nam consequat risus a lorem condimentum ut tristique urna tempus. Phasellus metus ante, facilisis a malesuada non, feugiat eget lacus. Nullam felis dui, vehicula a blandit nec, malesuada at nunc. Nam urna tortor, sollicitudin id ornare faucibus, tristique et urna. </p>
+				</article>
+			</div>
+			<div class="footer-content">
+				<div class="footer-content-wrapper">
+					<p>Footer Contact</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>
