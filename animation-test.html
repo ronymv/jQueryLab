@@ -40,7 +40,7 @@
 	.page-content .header-content-wrapper, .page-content .content-wrapper, .page-content .footer-content-wrapper { padding:50px; }
 
 	.android { position:absolute; left:320px; top:150px; }
-	.android2 { position:absolute; left:120px; top:100px; height:80px; }
+	.android2 { position:absolute; left:120px; top:500px; height:180px; }
 	.android3 { position:absolute; left:820px; top:120px; height:120px; }
 
 	#home-text { position:absolute; top:40px; left:40%; font-size:36px; font-weight:bold; }
@@ -60,116 +60,193 @@
 	<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
 	<script type="text/javascript" src="js/jquery.animate-colors-min.js"></script>
 	<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
-	<script type="text/javascript" src="js/jquery.onePage.js"></script>
+	<!-- <script type="text/javascript" src="js/jquery.onePage.js"></script> -->
 
 	<script type="text/javascript">
 
+		var speed = 0.10;
+		var mScroll = 0;
+		var topScroll = 0;
+
 		var animData = [
-			// Home
+			// scene 1
 			{
-				page: '#home-content', 
-				name: '.android', 
-				out: {
-					animate: { left: -2000, top:-500 }, 
-					options: { duration: 300, easing: 'easeOutExpo' }, 
-				}
-			}, 
+				scene:"#home-content",
+				name:".android",
+				runStatus:[
+					{p:10,pos:true,x:275,y:540,alpha:true,opacity:1,scale:true,orgSize:[475,270],scaleSize:1},
+					{p:180,pos:true,x:275,y:340,alpha:true,opacity:1,scale:true,orgSize:[475,270],scaleSize:1},
+					{p:270,pos:true,x:275,y:320,alpha:true,opacity:1,scale:true,orgSize:[375,370],scaleSize:1},
+					{p:500,pos:true,x:275,y:500,alpha:true,opacity:0,scale:true,orgSize:[175,170],scaleSize:1}
+				]
+			},
 			{
-				page: '#home-content', 
-				name: '.android2', 
-				out: {
-					animate: { left: 5600 }, 
-					options: { duration: 500, easing: 'easeOutExpo' }, 
-				}
-			}, 
-			{
-				page: '#home-content', 
-				name: '.android3', 
-				out: {
-					animate: { left: 2600, top: 2600 }, 
-					options: { duration: 800, easing: 'easeOutExpo' }, 
-				}
-			}, 
-			{
-				page: '#home-content', 
-				name: ['.home-letter-1'], 
-				out: {
-					animate: { top: -900, opacity: 0 }, 
-					options: { duration: 500, easing: 'easeOutQuad' }, 
-				}
-			}, 
-			{
-				page: '#home-content', 
-				name: ['.home-letter-2'], 
-				out: {
-					animate: { top: -1200, opacity: 0 }, 
-					options: { duration: 500, easing: 'easeOutQuad' }, 
-				}
-			}, 
-			{
-				page: '#home-content', 
-				name: ['.home-letter-3'], 
-				out: {
-					animate: { top: -700, opacity: 0 }, 
-					options: { duration: 500, easing: 'easeOutQuad' }, 
-				}
-			}, 
-			{
-				page: '#home-content', 
-				name: ['.home-letter-4'], 
-				out: {
-					animate: { top: -300, opacity: 0 }, 
-					options: { duration: 500, easing: 'easeOutQuad' }, 
-				}
-			}, 
-			{
-				page: '#home-content', 
-				name: ['.home-letter-5'], 
-				out: {
-					animate: { top: -800, opacity: 0 }, 
-					options: { duration: 500, easing: 'easeOutQuad' }, 
-				}
-			}, 
-			{
-				page: '#home-content', 
-				name: ['.home-letter-6'], 
-				out: {
-					animate: { top: -400, opacity: 0 }, 
-					options: { duration: 500, easing: 'easeOutQuad' }, 
-				}
-			}, 
-			{
-				page: '#home-content', 
-				name: ['.home-letter-7'], 
-				out: {
-					animate: { top: -700, opacity: 0 }, 
-					options: { duration: 500, easing: 'easeOutQuad' }, 
-				}
-			}, 
-			{
-				page: '#home-content', 
-				name: ['.home-letter-8'], 
-				out: {
-					animate: { top: -600, opacity: 0 }, 
-					options: { duration: 500, easing: 'easeOutQuad' }, 
-				}
-			}, 
-			// About
-			{
-				page: '#about-content', 
-				name: ['.header-content', '.footer-content'], 
-				out: {
-					animate: { left: 1600 }, 
-					options: { duration: 500, easing: 'easeOutExpo' }, 
-				}
+				scene:"#home-content",
+				name:".android2",
+				runStatus:[
+					{p:11,pos:true,x:475,y:540,alpha:true,opacity:1,scale:true,orgSize:[100,80],scaleSize:1},
+					{p:181,pos:true,x:575,y:340,alpha:true,opacity:1,scale:true,orgSize:[120,100],scaleSize:1},
+					{p:271,pos:true,x:375,y:320,alpha:true,opacity:1,scale:true,orgSize:[140,120],scaleSize:1},
+					{p:501,pos:true,x:175,y:300,alpha:true,opacity:0,scale:true,orgSize:[200,180],scaleSize:1}
+				]
 			}
 		];
 
-		
+		var Utils = (function() {
+
+			var init = function() {
+				$(".android,.android2,.android3").each(function(){
+					$(this).css("position","absolute");
+				})
+				for (var i=0; i < animData.length; i++) {
+				  setObj(animData[i]);
+				};
+			};
+
+			var setObj = function(obj) {
+				var target = $(obj.scene+" "+obj.name);
+				obj.target = target;
+			};
+
+			function anim(obj){
+				//var target = $(obj.scene + ' ' + obj.name);
+				var target = obj.target;
+				var step = obj.runStatus.length;
+				for (var i=0; i < obj.runStatus.length; i++) {
+					if (Utils.getTopScroll() < obj.runStatus[i].p){
+						step = i;
+						break;
+					}
+				};
+				
+				switch(step){
+					case 0:
+						changeFix(target,obj.runStatus[step]);
+						break;
+					case obj.runStatus.length:
+						changeFix(target,obj.runStatus[step-1]);
+						break;
+					default:
+						change(target,obj.runStatus[step-1],obj.runStatus[step]);
+						break;
+				}
+			}
+
+			function change(target,animobj1,animobj2){
+				
+				var per = (Utils.getTopScroll()-animobj1.p)/(animobj2.p-animobj1.p);
+				var cssObj = {};
+				if(animobj1.pos){
+					cssObj["left"] = (animobj2.x-animobj1.x)*per+animobj1.x;
+					cssObj["top"] = (animobj2.y-animobj1.y)*per+animobj1.y;
+				}
+				if(animobj1.alpha){
+					var doa = (animobj2.opacity - animobj1.opacity);
+					if(doa != 0){
+						if(animobj2.opacity < animobj1.opacity){
+							doa = animobj1.opacity-Math.abs(doa*per);
+						}else{
+							doa = Math.abs(doa*per);
+						}
+					}else{
+						doa = animobj2.opacity;
+					}
+
+					cssObj["opacity"] = doa;
+
+					// if(!Utils.getBrowser().IE7 && !Utils.getBrowser().IE8){
+					// 	cssObj["opacity"] = doa;
+					// }
+					if(doa == 0){
+						cssObj["display"] = "none";
+					}else{
+						cssObj["display"] = "block";
+					}
+				}
+				if(animobj1.scale){
+					cssObj["width"] = Math.floor((animobj2.orgSize[0]-animobj1.orgSize[0])*per+animobj1.orgSize[0]);
+					cssObj["height"] = Math.floor((animobj2.orgSize[1]-animobj1.orgSize[1])*per+animobj1.orgSize[1]);
+				}
+				target.css(cssObj);
+			}
+
+			function changeFix(target,animobj){
+				var cssObj = {};
+				if(animobj.pos){
+					cssObj["left"] = animobj.x;
+					cssObj["top"] = animobj.y;
+				}
+				if(animobj.alpha){
+					// if(!Utils.getBrowser().IE7 && !Utils.getBrowser().IE8){
+					// 	cssObj["opacity"] = animobj.opacity;
+						
+					// }
+					cssObj["opacity"] = animobj.opacity;
+
+					if(animobj.opacity == 0){
+						cssObj["display"] = "none";
+					}else{
+						cssObj["display"] = "block";
+					}
+				}
+				if(animobj.scale){
+					cssObj["width"] = animobj.orgSize[0];
+					cssObj["height"] = animobj.orgSize[1];
+				}
+				target.css(cssObj);
+			}
+
+			var run = function(){
+				for (var i=0; i < animData.length; i++) {
+					anim(animData[i]);
+				};
+			}
+
+			function getTopScroll(){
+				return topScroll;
+			}
+
+			return {
+				init: init, 
+				run: run, 
+				getTopScroll: getTopScroll
+			}
+		})();
+
+		function render(){
+			topScroll += Math.floor((mScroll - topScroll)*speed);
+			$('#debug').html(topScroll);
+			Utils.run();
+			requestAnimFrame(render);
+		};
+
 
 		$(document).ready(function(){
+			window.requestAnimFrame = (function() {
+				return window.requestAnimationFrame ||
+					window.webkitRequestAnimationFrame ||
+					window.mozRequestAnimationFrame ||
+					window.oRequestAnimationFrame ||
+					window.msRequestAnimationFrame ||
+					function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+						window.setTimeout(callback, 1000/60);
+					};
+			})();
 
-			$.onePage();
+			$(window).scroll(function () {
+				mScroll = $(this).scrollTop();
+			});
+
+			$(window).load(function(){
+				Utils.init();
+				render();
+			})
+
+			// $(window).scroll(function() {
+			// 	//Utils.run();
+			// 	//requestAnimFrame(render);
+			// });
+
 			
 		});
 
@@ -185,6 +262,7 @@
 					<li><a href="#about">About</a></li>
 					<li><a href="#projects">Projects</a></li>
 					<li><a href="#contact">Contact</a></li>
+					<li id="debug"></li>
 				</ul>
 			</nav>
 		</div>
