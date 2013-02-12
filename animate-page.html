@@ -85,11 +85,97 @@
 					{p:270,pos:true,x:475,y:300,alpha:true,opacity:1,scale:true,orgSize:[100,80],scaleSize:1},
 					{p:500,pos:true,x:475,y:700,alpha:true,opacity:0,scale:true,orgSize:[100,80],scaleSize:1}
 				]
+			},
+			// Letras
+			{
+				scene:"#home-content",
+				name:".home-letter-1",
+				runStatus:[
+					{p:11,pos:true,y:0,alpha:true,opacity:1},
+					{p:180,pos:true,y:-50,alpha:true,opacity:1},
+					{p:270,pos:true,y:-150,alpha:true,opacity:1},
+					{p:500,pos:true,y:-300,alpha:true,opacity:0}
+				]
+			},
+			{
+				scene:"#home-content",
+				name:".home-letter-2",
+				runStatus:[
+					{p:11,pos:true,y:0,alpha:true,opacity:1},
+					{p:150,pos:true,y:-70,alpha:true,opacity:1},
+					{p:220,pos:true,y:-120,alpha:true,opacity:1},
+					{p:500,pos:true,y:-400,alpha:true,opacity:0}
+				]
+			},
+			{
+				scene:"#home-content",
+				name:".home-letter-3",
+				runStatus:[
+					{p:11,pos:true,y:0,alpha:true,opacity:1},
+					{p:150,pos:true,y:-30,alpha:true,opacity:1},
+					{p:220,pos:true,y:-70,alpha:true,opacity:1},
+					{p:500,pos:true,y:-300,alpha:true,opacity:0}
+				]
+			},
+			{
+				scene:"#home-content",
+				name:".home-letter-4",
+				runStatus:[
+					{p:11,pos:true,y:0,alpha:true,opacity:1},
+					{p:150,pos:true,y:-90,alpha:true,opacity:1},
+					{p:220,pos:true,y:-160,alpha:true,opacity:1},
+					{p:500,pos:true,y:-400,alpha:true,opacity:0}
+				]
+			},
+			{
+				scene:"#home-content",
+				name:".home-letter-5",
+				runStatus:[
+					{p:11,pos:true,y:0,alpha:true,opacity:1},
+					{p:150,pos:true,y:-20,alpha:true,opacity:1},
+					{p:220,pos:true,y:-50,alpha:true,opacity:1},
+					{p:500,pos:true,y:-400,alpha:true,opacity:0}
+				]
+			},
+			{
+				scene:"#home-content",
+				name:".home-letter-6",
+				runStatus:[
+					{p:11,pos:true,y:0,alpha:true,opacity:1},
+					{p:150,pos:true,y:-110,alpha:true,opacity:1},
+					{p:220,pos:true,y:-190,alpha:true,opacity:1},
+					{p:500,pos:true,y:-400,alpha:true,opacity:0}
+				]
+			},
+			{
+				scene:"#home-content",
+				name:".home-letter-7",
+				runStatus:[
+					{p:11,pos:true,y:0,alpha:true,opacity:1},
+					{p:150,pos:true,y:-100,alpha:true,opacity:1},
+					{p:220,pos:true,y:-150,alpha:true,opacity:1},
+					{p:500,pos:true,y:-400,alpha:true,opacity:0}
+				]
+			},
+			{
+				scene:"#home-content",
+				name:".home-letter-8",
+				runStatus:[
+					{p:11,pos:true,y:0,alpha:true,opacity:1},
+					{p:150,pos:true,y:-40,alpha:true,opacity:1},
+					{p:220,pos:true,y:-150,alpha:true,opacity:1},
+					{p:500,pos:true,y:-400,alpha:true,opacity:0}
+				]
 			}
 		];
 
 		$(document).ready(function(){
-			$.onePage();
+			$.onePage({
+				nav_duration: 1200,
+				easing_nav: 'easeInOutQuad', 
+				mouse_wheel: false 
+			});
+
 			$.animatePage({
 				animation_data: animData
 			});

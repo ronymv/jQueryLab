@@ -110,19 +110,34 @@ class DetectPlugins extends Object
 	<link rel="stylesheet" href="css/index.css" media="all" type="text/css" />
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/jquery.focusBox.js"></script>
+	<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+	<script type="text/javascript" src="js/jquery.masonry.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
+
 			$('#available-plugins').focusBox({
 				reference: '.item-plugin',
-				opacity: 0.2
+				opacity: 0.5
 			});
+
+			$('#available-plugins').masonry({
+				itemSelector : '.item-plugin', 
+				columnWidth: 10, 
+				isAnimated: true, 
+				animationOptions: {
+					queue: false,
+					duration: 500, 
+					easing: 'easeOutQuad'
+				}
+			});
+
 		});
 	</script>
 </head>
 <body>
 	<div class="content">
 		<h1>jQueryLab</h1>
-		<div id="available-plugins">
+		<div id="available-plugins" style="position:relative;width:100%;">
 			<?php 
 			
 				try 

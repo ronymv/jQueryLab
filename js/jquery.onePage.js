@@ -26,7 +26,7 @@
 
 			this.setCurrentPage();
 
-			this.setMouseWheel();
+			if (this.options.mouse_wheel) this.setMouseWheel();
 		}, 
 
 		setPositions: function() {
@@ -139,12 +139,7 @@
 					page 				= _this.pages[i].page;
 					_this.current_page	= _this.pages[i];
 					_this.is_top_page	= (scrollTop == _this.pages[i].top) ? true : false;
-					
-					_this.moveElements();
-
-					if (_this.pages[i+1]) {
-						_this.resetPosition(_this.pages[i+1]);
-					};
+					if (_this.pages[i+1]) _this.resetPosition(_this.pages[i+1]);
 				}
 			});
 		}, 
@@ -163,62 +158,6 @@
 			$(page).find('.footer-content').stop().animate({
 				left: 0
 			}, 1200, _this.options.easing_enter);
-		}, 
-
-		moveElements: function() {
-			var _this = this;
-			if (typeof animData != 'object') return false;
-			$.each(animData, function(i, data) {
-				if (data.page == _this.current_page.page) {
-					var name = (typeof data.name == 'object') ? data.name.join(',') : data.name;
-					var element = $(data.page).find(name);
-
-					if (!animData[i].enter) {
-						var animate_enter = {};
-						$.each(animData[i].out.animate, function(param, value) {
-							animate_enter[param] = element.css(param) || value;
-						});
-						animData[i].enter = {
-							animate: animate_enter
-						};
-					};
-
-					var original_left			= data.out.animate.left;
-					var original_right			= data.out.animate.right;
-					var original_top			= data.out.animate.top;
-					var original_bottom			= data.out.animate.bottom;
-					var original_opacity		= data.out.animate.opacity;
-					
-					data.out.animate.left		= _this.getPartialValue(data.out.animate.left) + parseInt(data.enter.animate.left);
-					data.out.animate.right		= _this.getPartialValue(data.out.animate.right) + parseInt(data.enter.animate.right);
-					data.out.animate.top		= _this.getPartialValue(data.out.animate.top) + parseInt(data.enter.animate.top);
-					data.out.animate.bottom		= _this.getPartialValue(data.out.animate.bottom) + parseInt(data.enter.animate.bottom);
-
-					if (typeof data.out.animate.opacity == 'number') {
-						data.out.animate.opacity	= ((data.out.animate.top * 100) / (original_top / 3) ) * 0.01;
-						data.out.animate.opacity	= Math.floor(data.out.animate.opacity * 10) / 10;
-						data.out.animate.opacity 	= (1 - data.out.animate.opacity);
-					}
-
-					element.stop().animate(data.out.animate, data.out.options);
-					
-					data.out.animate.left		= original_left;
-					data.out.animate.right		= original_right;
-					data.out.animate.top		= original_top;
-					data.out.animate.bottom		= original_bottom;
-					data.out.animate.opacity	= original_opacity;
-
-				};
-			});
-		}, 
-
-		getPartialValue: function(final_left) {
-			var _this 			= this;
-			var scrollTop 		= ($(window).scrollTop() + _this.main_nav.height());
-			var init_position	= (scrollTop - _this.current_page.top);
-			var final_position	= $(_this.current_page.page).height();
-			var left_item 		= ( init_position * final_left ) / final_position;
-			return left_item;
 		}, 
 
 		setMouseWheel: function() {
@@ -240,12 +179,9 @@
 
 	$.onePage = function(options) {
 		var defaults = {
-			nav_duration: 		2000, 
-			header_duration: 	1000, 
-			content_duration: 	1000, 
-			footer_duration: 	1000,
-			easing_out: 		'easeInExpo',
-			easing_nav: 		'easeInOutQuad'
+			nav_duration: 		1500, 
+			easing_nav: 		'easeInOutQuad', 
+			mouse_wheel: 		true
 		};
 		var options = $.extend({}, defaults, options);
 		methods.init(options);

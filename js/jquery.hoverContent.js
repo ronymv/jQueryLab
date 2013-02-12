@@ -6,6 +6,7 @@
 			startEasing: 'swing', 
 			endEasing: 'swing', 
 			direction: 'left', 
+			opacity: 0.9, 
 			invert: false
 		};
 		
@@ -14,8 +15,22 @@
 		var methods = {
 			getOptionAnimation: function(element) {
 				var options_animation = {
-					hover: { left:'auto', top:'auto', right:'auto', bottom:'auto', width: element.width(), height: element.height() }, 
-					out: { left:'auto', top:'auto', right:'auto', bottom:'auto', width: element.width(), height: element.height() }
+					hover: { 
+						left:'auto', 
+						top:'auto', 
+						right:'auto', 
+						bottom:'auto', 
+						width: element.width(), 
+						height: element.height() 
+					}, 
+					out: { 
+						left:'auto', 
+						top:'auto', 
+						right:'auto', 
+						bottom:'auto', 
+						width: element.width(), 
+						height: element.height()
+					}
 				};
 
 				switch (options.direction)
@@ -34,6 +49,13 @@
 						break;
 					case 'bottom' : 
 						options_animation.out.bottom 	= -(element.height()) + 'px'; 
+						options_animation.hover.bottom 	= '0px'; 
+						break;
+					case 'center' : 
+						options_animation.hover.opacity = options.opacity;
+						options_animation.out.opacity = 0;
+
+						options_animation.out.bottom 	= '0px'; 
 						options_animation.hover.bottom 	= '0px'; 
 						break;
 				}
@@ -55,9 +77,31 @@
 			_this.find('.item-content-hide').css( options_animation.out );
 
 			_this.hover(function() {
-				$(this).find('.item-content-hide').stop().animate(options_animation.hover, options.startDuration, options.startEasing);
+
+				var _width = _this.outerWidth();
+				var _height = _this.outerHeight();
+
+				options_animation.hover.width = _width;
+				options_animation.hover.height = _height;
+
+				$(this)
+					.find('.item-content-hide')
+					.stop()
+					.show()
+					.animate(options_animation.hover, options.startDuration, options.startEasing);
+
 			}, function() {
-				$(this).find('.item-content-hide').stop().animate(options_animation.out, options.endDuration, options.startEasing);
+
+				var _width = _this.outerWidth();
+				var _height = _this.outerHeight();
+
+				options_animation.out.width = _width;
+				options_animation.out.height = _height;
+
+				$(this)
+					.find('.item-content-hide')
+					.stop()
+					.animate(options_animation.out, options.endDuration, options.startEasing);
 			});
 		});
 
